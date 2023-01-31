@@ -99,8 +99,10 @@ console.log(Kazananlar(fifaData,Finaller));
 
 function YillaraGoreKazananlar(fifaData,CallbackFinaller,CallbackYillar,CallbackKazananlar) {
 	let kazananlarList=[];
-	for (let i = 0; i < (CallbackYillar(fifaData,CallbackFinaller)).length; i++){
-		kazananlarList.push(`${CallbackYillar(fifaData,CallbackFinaller)[i]} yılında, ${CallbackKazananlar(fifaData,CallbackFinaller)[i]} dünya kupasını kazandı!`)
+	const yillar = CallbackYillar(fifaData,CallbackFinaller)
+	const winners = CallbackKazananlar (fifaData,CallbackFinaller)
+	for (let i = 0; i < yillar.length; i++){
+		kazananlarList.push(`${yillar[i]} yılında, ${winners[i]} dünya kupasını kazandı!`)
 	}
 	return kazananlarList
   }
@@ -152,22 +154,69 @@ function UlkelerinKazanmaSayilari(/* kodlar buraya */) {
 /*  BONUS 2:  
 EnCokGolAtan() isminde bir fonksiyon yazın, `data` yı parametre olarak alsın ve Dünya kupası finallerinde en çok gol atan takımı döndürsün */
 
-function EnCokGolAtan(/* kodlar buraya */) {
+function EnCokGolAtan(fifaData) {
+	let golSayilari= {};
+	for (let i = 0; i < fifaData.length ; i++){
+		let evSahibi= fifaData[i]["Home Team Name"];
+		let misafir= fifaData[i]["Away Team Name"];
+		if (!golSayilari[evSahibi]){
+			golSayilari[evSahibi] = parseInt(fifaData[i]["Home Team Goals"]);
+		}else {
+			golSayilari[evSahibi] += parseInt(fifaData[i]["Home Team Goals"])
+		}
+		if (!golSayilari[misafir]){
+			golSayilari[misafir] = parseInt(fifaData[i]["Away Team Goals"]);
+		}else {
+			golSayilari[misafir] += parseInt(fifaData[i]["Away Team Goals"])
+		}
+	}
+	let enCokGolAtan="";
+	let enFazlaGol=0;
+	for (let i=0; i < fifaData.length; i++){
+		let takim=fifaData[i]["Home Team Name","Away Team Name"]
+		if(golSayilari[takim] > enFazlaGol){
+			enCokGolAtan=takim;
+			enFazlaGol=golSayilari[takim]
+		}
+	}
 	
-    /* kodlar buraya */
-	
-}
-
+	return enCokGolAtan
+	}
+	console.log(EnCokGolAtan(Finaller(fifaData)))
 
 /*  BONUS 3: 
 EnKotuDefans() adında bir fonksiyon yazın, `data` yı parametre olarak alsın ve Dünya kupasında finallerinde en çok golü yiyen takımı döndürsün*/
 
-function EnKotuDefans(/* kodlar buraya */) {
+function EnKotuDefans(fifaData) {
+	let golSayilari= {};
+	for (let i = 0; i < fifaData.length ; i++){
+		let evSahibi= fifaData[i]["Home Team Name"];
+		let misafir= fifaData[i]["Away Team Name"];
+		if (!golSayilari[evSahibi]){
+			golSayilari[evSahibi] = parseInt(fifaData[i]["Home Team Goals"]);
+		}else {
+			golSayilari[evSahibi] -= parseInt(fifaData[i]["Home Team Goals"])
+		}
+		if (!golSayilari[misafir]){
+			golSayilari[misafir] = parseInt(fifaData[i]["Away Team Goals"]);
+		}else {
+			golSayilari[misafir] -= parseInt(fifaData[i]["Away Team Goals"])
+		}
+	}
 	
-    /* kodlar buraya */
-	
+	let enCokGolYiyenTakim="";
+	let enFazlaGol=0;
+    for (let i=0; i < fifaData.length; i++){
+		let takim=fifaData[i]["Home Team Name","Away Team Name"]
+		if(golSayilari[takim] > enFazlaGol){
+			enFazlaGol=golSayilari[takim];
+			enCokGolYiyenTakim=takim;
+		}
+	}
+	return enCokGolYiyenTakim;
 }
 
+	console.log(EnKotuDefans(Finaller(fifaData)))
 
 /* Hala vaktiniz varsa, README dosyasında listelenen hedeflerden istediğinizi aşağıdaki boşluğa yazabilirsiniz. */
 
