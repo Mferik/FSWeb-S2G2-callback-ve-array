@@ -143,12 +143,33 @@ console.log(OrtalamaGolSayisi(Finaller(fifaData)))
 	İpucu: "takım kısaltmaları" (team initials) için datada araştırma yapın!
 İpucu: `.reduce` Kullanın*/
 
-function UlkelerinKazanmaSayilari(/* kodlar buraya */) {
-	
-    /* kodlar buraya */
-	
-}
+	let initials=[];
+	let kazananTakimlar={};
+	Finaller(fifaData).forEach(i => {
+		if(!initials.includes(i["Home Team Initials"])){
+			initials.push(i["Home Team Initials"]);
+			kazananTakimlar[i["Home Team Initials"]] = 0;
+		}
+		if(!initials.includes(i["Away Team Initials"])){
+			initials.push(i["Away Team Initials"]);
+			kazananTakimlar[i["Away Team Initials"]]= 0;
+		}
+	});
+		console.log(initials)
+		console.log(kazananTakimlar)
 
+function UlkelerinKazanmaSayilari(fifaData) {
+	Finaller(fifaData).forEach((i)=> {
+		if(i["Home Team Goals"] > i["Away Team Goals"]){
+			kazananTakimlar[i["Home Team Initials"]]++
+		} else {
+			kazananTakimlar[i["Away Team Initials"]]++
+		}
+	})
+   
+}
+UlkelerinKazanmaSayilari(fifaData);
+console.log(kazananTakimlar)
 
 
 /*  BONUS 2:  
@@ -159,15 +180,17 @@ function EnCokGolAtan(fifaData) {
 	for (let i = 0; i < fifaData.length ; i++){
 		let evSahibi= fifaData[i]["Home Team Name"];
 		let misafir= fifaData[i]["Away Team Name"];
+
 		if (!golSayilari[evSahibi]){
-			golSayilari[evSahibi] = parseInt(fifaData[i]["Home Team Goals"]);
+			golSayilari[evSahibi] = (fifaData[i]["Home Team Goals"]);
 		}else {
-			golSayilari[evSahibi] += parseInt(fifaData[i]["Home Team Goals"])
+			golSayilari[evSahibi] += (fifaData[i]["Home Team Goals"])
 		}
+
 		if (!golSayilari[misafir]){
-			golSayilari[misafir] = parseInt(fifaData[i]["Away Team Goals"]);
+			golSayilari[misafir] = (fifaData[i]["Away Team Goals"]);
 		}else {
-			golSayilari[misafir] += parseInt(fifaData[i]["Away Team Goals"])
+			golSayilari[misafir] += (fifaData[i]["Away Team Goals"])
 		}
 	}
 	let enCokGolAtan="";
@@ -193,14 +216,14 @@ function EnKotuDefans(fifaData) {
 		let evSahibi= fifaData[i]["Home Team Name"];
 		let misafir= fifaData[i]["Away Team Name"];
 		if (!golSayilari[evSahibi]){
-			golSayilari[evSahibi] = parseInt(fifaData[i]["Home Team Goals"]);
+			golSayilari[evSahibi] = (fifaData[i]["Home Team Goals"]);
 		}else {
-			golSayilari[evSahibi] -= parseInt(fifaData[i]["Home Team Goals"])
+			golSayilari[evSahibi] -= (fifaData[i]["Home Team Goals"])
 		}
 		if (!golSayilari[misafir]){
-			golSayilari[misafir] = parseInt(fifaData[i]["Away Team Goals"]);
+			golSayilari[misafir] = (fifaData[i]["Away Team Goals"]);
 		}else {
-			golSayilari[misafir] -= parseInt(fifaData[i]["Away Team Goals"])
+			golSayilari[misafir] -= (fifaData[i]["Away Team Goals"])
 		}
 	}
 	
